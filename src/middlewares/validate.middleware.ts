@@ -10,7 +10,10 @@ const validate = (schema: { body?: ZodSchema; query?: ZodSchema; params?: ZodSch
       if (schema.params) schema.params.parse(req.params);
       next();
     } catch (error: any) {
-      next(new ApiError(400, error.errors?.[0]?.message || 'Validation Error'));
+      const errorMessage = error.errors
+        ? error.errors.map((details: any) => `${details.path.join('.')}: ${details.message}`).join(', ')
+        : 'Validation Error';
+      next(new ApiError(400, errorMessage));
     }
   };
 };
