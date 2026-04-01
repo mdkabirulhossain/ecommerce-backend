@@ -17,7 +17,7 @@ export const errorHandler = (
 
   res.status(statusCode || 500).send({
     success: false,
+    statusCode: statusCode || 500,
     message,
-    ...(env.NODE_ENV === 'development' && { stack: err.stack }),
   });
 };
