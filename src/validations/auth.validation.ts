@@ -28,9 +28,4 @@ const refreshTokens = {
   }),
 };
 
-export default {
-  register,
-  login,
-  verifyEmail,
-  refreshTokens,
-};
+export { register, login, verifyEmail, refreshTokens };
