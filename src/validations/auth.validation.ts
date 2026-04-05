@@ -22,8 +22,15 @@ const verifyEmail = {
   }),
 };
 
+const refreshTokens = {
+  body: z.object({
+    refreshToken: z.string(),
+  }),
+};
+
 export default {
   register,
   login,
   verifyEmail,
+  refreshTokens,
 };

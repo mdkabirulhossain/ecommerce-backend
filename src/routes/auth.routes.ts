@@ -72,4 +72,25 @@ router.post('/login', validate(authValidation.login), authController.login);
  */
 router.post('/verify-email', validate(authValidation.verifyEmail), authController.verifyEmail);
 
+/**
+ * @openapi
+ * /auth/refresh-tokens:
+ *   post:
+ *     summary: Refresh authentication tokens
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [refreshToken]
+ *             properties:
+ *               refreshToken: {type: string}
+ *     responses:
+ *       200:
+ *         description: New tokens generated
+ */
+router.post('/refresh-tokens', validate(authValidation.refreshTokens), authController.refreshTokens);
+
 export default router;

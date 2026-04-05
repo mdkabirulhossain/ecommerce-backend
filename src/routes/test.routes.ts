@@ -1,4 +1,5 @@
 import express, { Router, Request, Response } from 'express';
+import { auth } from '../middlewares/auth.middleware.js';
 
 const router: Router = express.Router();
 
@@ -6,20 +7,15 @@ const router: Router = express.Router();
  * @openapi
  * /test:
  *   get:
- *     summary: Test endpoint to verify server is working
+ *     summary: Test endpoint to verify server is working (Protected)
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: Success
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
  */
-router.get('/test', (req: Request, res: Response) => {
-  res.send({ message: 'test is working' });
+router.get('/test', auth, (req: Request, res: Response) => {
+  res.send({ message: 'test is working', user: (req as any).user });
 });
 
 /**

@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs';
 import ApiError from '../utils/ApiError.js';
 import prisma from '../config/prisma.js';
-import { generateToken } from '../utils/jwt.js';
+import { generateAccessToken, generateRefreshToken, verifyRefreshToken } from '../utils/jwt.js';
 import { sendOtpEmail } from './mail.service.js';
 
 const register = async (userData: any) => {
@@ -107,7 +107,8 @@ const login = async (email: string, password: string) => {
   }
 
   // Generate tokens
-  const accessToken = generateToken({ id: user.id, role: user.role });
+  const accessToken = generateAccessToken({ id: user.id, role: user.role });
+  const refreshToken = generateRefreshToken({ id: user.id, role: user.role });
 
   return {
     user: {
@@ -116,12 +117,39 @@ const login = async (email: string, password: string) => {
       name: user.name,
       role: user.role,
     },
-    accessToken,
+    tokens: {
+      access: accessToken,
+      refresh: refreshToken,
+    },
   };
+};
+
+const refreshTokens = async (refreshToken: string) => {
+  try {
+    const decoded = verifyRefreshToken(refreshToken) as any;
+    const user = await prisma.user.findUnique({
+      where: { id: decoded.id },
+    });
+
+    if (!user) {
+      throw new Error();
+    }
+
+    const accessToken = generateAccessToken({ id: user.id, role: user.role });
+    const newRefreshToken = generateRefreshToken({ id: user.id, role: user.role });
+
+    return {
+      access: accessToken,
+      refresh: newRefreshToken,
+    };
+  } catch (error) {
+    throw new ApiError(401, 'Please authenticate');
+  }
 };
 
 export default {
   register,
   verifyEmail,
   login,
+  refreshTokens,
 };

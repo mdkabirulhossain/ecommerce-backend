@@ -31,8 +31,19 @@ const verifyEmail = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const refreshTokens = catchAsync(async (req: Request, res: Response) => {
+  const { refreshToken } = req.body;
+  const result = await authService.refreshTokens(refreshToken);
+  res.status(200).send({
+    success: true,
+    statusCode: 200,
+    data: result,
+  });
+});
+
 export default {
   register,
   login,
   verifyEmail,
+  refreshTokens,
 };
