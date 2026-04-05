@@ -50,4 +50,26 @@ router.post('/register', validate(authValidation.register), authController.regis
  */
 router.post('/login', validate(authValidation.login), authController.login);
 
+/**
+ * @openapi
+ * /auth/verify-email:
+ *   post:
+ *     summary: Verify email with OTP
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [email, otp]
+ *             properties:
+ *               email: {type: string}
+ *               otp: {type: string}
+ *     responses:
+ *       200:
+ *         description: Success
+ */
+router.post('/verify-email', validate(authValidation.verifyEmail), authController.verifyEmail);
+
 export default router;

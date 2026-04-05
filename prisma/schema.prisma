@@ -20,10 +20,13 @@ model User {
   email     String   @unique
   name      String?
   password  String
-  role      Role     @default(USER)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  products  Product[]
+  role                  Role      @default(USER)
+  isVerified            Boolean   @default(false)
+  verificationOtp       String?
+  verificationOtpExpires DateTime?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+  products              Product[]
 }
 
 model Product {

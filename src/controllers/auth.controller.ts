@@ -21,7 +21,18 @@ const login = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const verifyEmail = catchAsync(async (req: Request, res: Response) => {
+  const { email, otp } = req.body;
+  const result = await authService.verifyEmail(email, otp);
+  res.status(200).send({
+    success: true,
+    statusCode: 200,
+    data: result,
+  });
+});
+
 export default {
   register,
   login,
+  verifyEmail,
 };
