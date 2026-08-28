@@ -3,5 +3,8 @@ node_modules
 .env
 
 /generated/prisma
-.gitignore
 
+branch_structure.json
+temp_auto_push.bat
+temp_interactive_push.bat
+.gitignore
